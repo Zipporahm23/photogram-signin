@@ -1,4 +1,55 @@
 class UsersController < ApplicationController
+
+  def authenticate
+    un = params.fetch("input_username")
+    pw = params.fetch("input_password")
+
+    #get the username from params
+    #get the passwrd from params
+
+    #looks up record from db mathcing username
+    user = User.where({ :username => un }).at(0)
+
+    #if theres no record, redirect back to signin form
+    if user == nil
+      redirect_to("/user_sign_in", { :alert => "No one by that name 'round these parts" })
+      #if there is a record, check to see if password matches
+    else
+      if user.authenticate(pw)
+        session.store(:user_id, user.id)
+     #if so, set the cookie
+
+        redirect_to("/", { :notice => "Welcome back, " + user.username + "!" })
+      else
+     #if not redirect to signin form
+     redirect_to("/user_sign_in", { :alert => "Nice try dude!" })
+      end
+    end
+  
+# redirect to homepage
+  
+
+   
+    # redirect to homepage
+
+  end
+  def logging_out
+    reset_session
+
+    redirect_to("/", { :notice => "See ya later!" })
+  end 
+
+
+  def new_session_form
+    
+
+    render({ :template => "users/signin_form.html.erb" })
+  end 
+
+
+  def new_registration_form
+    render({ :template => "users/signup_form.html.erb" })
+  end
   def index
     @users = User.all.order({ :username => :asc })
 
@@ -14,12 +65,20 @@ class UsersController < ApplicationController
 
   def create
     user = User.new
-
+    #helps save the user information
+    
     user.username = params.fetch("input_username")
+    user.password = params.fetch("input_password")
+    user.password_confirmation = params.fetch("input_password_confirmation")
 
-    user.save
+    save_status = user.save
 
-    redirect_to("/users/#{user.username}")
+    if save_status == true
+      session.store(:user_id, user.id)
+
+      redirect_to("/users/#{user.username}", { :notice => "Welcome, " + user.username + "!" })
+    else 
+      redirect_to("/user_sign_up", { :alert => user.errors.full_messages.to_sentence })
   end
 
   def update
@@ -42,5 +101,5 @@ class UsersController < ApplicationController
 
     redirect_to("/users")
   end
-
+end
 end
