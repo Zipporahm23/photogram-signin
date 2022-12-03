@@ -3,10 +3,14 @@ Rails.application.routes.draw do
   get("/", { :controller => "users", :action => "index" })
 
   # User routes
-  get("/user_sign_up", { :controller => "users", :action => "new_registration_form" })
-  get("/user_sign_out", { :controller => "users", :action => "logging_out" })
-  get("/user_sign_in", { :controller => "users", :action => "new_session_form" })
-  post("/verify_credentials", { :controller => "users", :action => "authenticate" })
+
+  get("/user_sign_up", { :controller => "users", :action => "new_registration_form"})
+
+  get("/user_sign_out", { :controller => "users", :action => "sign_out"})
+
+  get("/user_sign_in", { :controller => "users", :action => "new_session_form"})
+
+  post("/verify_credentials", { :controller => "users", :action => "authenticate"})
 
   # CREATE
   get("/insert_user_record", {:controller => "users", :action => "create" })
@@ -40,7 +44,7 @@ Rails.application.routes.draw do
   # Comment routes
 
   # CREATE
-  get("/insert_comment_record", { :controller => "comments", :action => "create" })
+  post("/insert_comment_record", { :controller => "comments", :action => "create" })
 
   # DELETE
 

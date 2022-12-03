@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     # redirect to homepage
 
   end
-  def logging_out
+  def sign_out
     reset_session
 
     redirect_to("/", { :notice => "See ya later!" })

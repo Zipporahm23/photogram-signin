@@ -17,9 +17,13 @@
   <body>
        <nav>
       <ul>
-        <li><a href="user_sign_in">Sign in</a></li>
-        <li><a href="/user_sign_up">Sign up</a></li>
+        <% if @current_user != nil  %>
+        <li><a href="/users/<%= @current_user.username %>"><%= @current_user.username %></a></li>
         <li><a href="/user_sign_out">Sign out</a></li>
+        <% else %>
+        <li><a href="/user_sign_in">Sign in</a></li>
+        <li><a href="/user_sign_up">Sign up</a></li>
+        <% end %>
         <li><a href="/users">Users</a></li>
         <li><a href="/photos">Photos</a></li>
         <li>
